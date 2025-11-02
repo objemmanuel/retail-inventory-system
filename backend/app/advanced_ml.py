@@ -1,3 +1,8 @@
+"""
+Create this as backend/app/advanced_ml.py
+Advanced ML features for inventory management
+"""
+
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression, Ridge
@@ -89,22 +94,18 @@ class AdvancedAnalytics:
         if not sales:
             return {"error": "No sales data available"}
         
-        # Analyze by month
-        monthly_data = {}
+        # Initialize all months (1-12) with zero values
+        monthly_data = {i: {'revenue': 0, 'count': 0} for i in range(1, 13)}
         for sale in sales:
             month = int(sale.month)
-            if month not in monthly_data:
-                monthly_data[month] = {'revenue': 0, 'count': 0}
             monthly_data[month]['revenue'] += float(sale.revenue)
             monthly_data[month]['count'] += sale.count
         
-        # Analyze by day of week (0=Sunday, 6=Saturday)
+        # Initialize all days of week (0-6) with zero values
         day_names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-        daily_data = {}
+        daily_data = {i: {'revenue': 0, 'count': 0} for i in range(7)}
         for sale in sales:
             dow = int(sale.day_of_week)
-            if dow not in daily_data:
-                daily_data[dow] = {'revenue': 0, 'count': 0}
             daily_data[dow]['revenue'] += float(sale.revenue)
             daily_data[dow]['count'] += sale.count
         

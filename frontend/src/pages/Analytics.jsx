@@ -70,12 +70,12 @@ export default function Analytics() {
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4'];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 transition-colors">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Analytics</h1>
-          <p className="text-gray-600">AI-powered insights and predictions</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Analytics</h1>
+          <p className="text-gray-600 dark:text-gray-400">AI-powered insights and predictions</p>
         </div>
 
         {/* Time Range Selector */}
@@ -84,10 +84,10 @@ export default function Analytics() {
             <button
               key={days}
               onClick={() => setTimeRange(days)}
-              className={`px-4 py-2 rounded-lg ${
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 timeRange === days
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
               }`}
             >
               {days} Days
@@ -109,44 +109,44 @@ export default function Analytics() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Urgent Alerts */}
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow transition-colors">
               <div className="flex items-center gap-2 mb-4">
-                <AlertTriangle className="text-red-600" size={24} />
-                <h3 className="text-lg font-semibold">Urgent Restocks ({urgentPredictions.length})</h3>
+                <AlertTriangle className="text-red-600 dark:text-red-400" size={24} />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Urgent Restocks ({urgentPredictions.length})</h3>
               </div>
               
               <div className="space-y-3 max-h-96 overflow-y-auto">
                 {urgentPredictions.length === 0 ? (
-                  <p className="text-gray-500 text-center py-4">
+                  <p className="text-gray-500 dark:text-gray-400 text-center py-4">
                     No urgent restocks needed! 🎉
                   </p>
                 ) : (
                   urgentPredictions.map(pred => (
                     <div
                       key={pred.product_id}
-                      className="border-l-4 border-red-500 bg-red-50 p-4 rounded"
+                      className="border-l-4 border-red-500 bg-red-50 dark:bg-red-900 p-4 rounded"
                     >
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
-                          <p className="font-semibold text-gray-900">{pred.product_name}</p>
-                          <p className="text-sm text-gray-600">
+                          <p className="font-semibold text-gray-900 dark:text-white">{pred.product_name}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
                             Current Stock: {pred.current_stock}
                           </p>
                           {pred.daily_depletion_rate && (
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               Depletion: -{pred.daily_depletion_rate} units/day
                             </p>
                           )}
                         </div>
                         <div className="text-right">
-                          <p className="text-2xl font-bold text-red-600">
+                          <p className="text-2xl font-bold text-red-600 dark:text-red-400">
                             {Math.round(pred.predicted_days_until_stockout)}
                           </p>
-                          <p className="text-xs text-gray-600">days left</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">days left</p>
                           <span className={`text-xs px-2 py-1 rounded-full ${
-                            pred.confidence === 'high' ? 'bg-green-100 text-green-800' :
-                            pred.confidence === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-red-100 text-red-800'
+                            pred.confidence === 'high' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' :
+                            pred.confidence === 'medium' ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200' :
+                            'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200'
                           }`}>
                             {pred.confidence}
                           </span>
@@ -159,31 +159,31 @@ export default function Analytics() {
             </div>
 
             {/* Low Stock Products */}
-            <div className="bg-white p-6 rounded-lg shadow">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow transition-colors">
               <div className="flex items-center gap-2 mb-4">
-                <Package className="text-yellow-600" size={24} />
-                <h3 className="text-lg font-semibold">Low Stock Items ({lowStock.length})</h3>
+                <Package className="text-yellow-600 dark:text-yellow-400" size={24} />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Low Stock Items ({lowStock.length})</h3>
               </div>
               
               <div className="space-y-2 max-h-96 overflow-y-auto">
                 {lowStock.length === 0 ? (
-                  <p className="text-gray-500 text-center py-4">
+                  <p className="text-gray-500 dark:text-gray-400 text-center py-4">
                     All products are well stocked!
                   </p>
                 ) : (
                   lowStock.map(product => (
                     <div
                       key={product.id}
-                      className="flex justify-between items-center p-3 bg-yellow-50 rounded-lg hover:bg-yellow-100 cursor-pointer"
+                      className="flex justify-between items-center p-3 bg-yellow-50 dark:bg-yellow-900 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-800 transition-colors cursor-pointer"
                       onClick={() => setSelectedProduct(product)}
                     >
                       <div>
-                        <p className="font-medium text-gray-900">{product.name}</p>
-                        <p className="text-sm text-gray-600">{product.category}</p>
+                        <p className="font-medium text-gray-900 dark:text-white">{product.name}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">{product.category}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-lg font-bold text-yellow-600">{product.stock}</p>
-                        <p className="text-xs text-gray-500">/ {product.reorder_level}</p>
+                        <p className="text-lg font-bold text-yellow-600 dark:text-yellow-400">{product.stock}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">/ {product.reorder_level}</p>
                       </div>
                     </div>
                   ))
@@ -193,34 +193,41 @@ export default function Analytics() {
           </div>
         </div>
 
-        {/* Charts Section */}
+        {/* Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          {/* Top Selling Products */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <TrendingUp className="text-green-600" />
+          {/* Top Selling */}
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow transition-colors">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-900 dark:text-white">
+              <TrendingUp className="text-green-600 dark:text-green-400" />
               Top Selling Products ({timeRange} days)
             </h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={topSelling}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-700" />
                 <XAxis 
                   dataKey="name" 
                   angle={-45} 
                   textAnchor="end" 
                   height={100}
-                  tick={{ fontSize: 12 }}
+                  tick={{ fontSize: 12, fill: '#6b7280' }}
                 />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="total_sold" fill="#3b82f6" />
+                <YAxis tick={{ fontSize: 12, fill: '#6b7280' }} />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    borderRadius: '8px',
+                    border: 'none',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                  }}
+                />
+                <Bar dataKey="total_sold" fill="#3b82f6" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
           {/* Category Distribution */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold mb-4">Stock by Category</h3>
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow transition-colors">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Stock by Category</h3>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
@@ -237,7 +244,14 @@ export default function Analytics() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    borderRadius: '8px',
+                    border: 'none',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -245,15 +259,15 @@ export default function Analytics() {
 
         {/* Stock History Detail */}
         {selectedProduct && (
-          <div className="bg-white p-6 rounded-lg shadow">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow transition-colors">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h3 className="text-lg font-semibold">{selectedProduct.name} - Stock History</h3>
-                <p className="text-sm text-gray-600">{selectedProduct.category}</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{selectedProduct.name} - Stock History</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{selectedProduct.category}</p>
               </div>
               <button
                 onClick={() => setSelectedProduct(null)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
               >
                 Close
               </button>
@@ -261,10 +275,17 @@ export default function Analytics() {
 
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={stockHistory}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-700" />
+                <XAxis dataKey="date" tick={{ fontSize: 12, fill: '#6b7280' }} />
+                <YAxis tick={{ fontSize: 12, fill: '#6b7280' }} />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    borderRadius: '8px',
+                    border: 'none',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                  }}
+                />
                 <Legend />
                 <Line 
                   type="monotone" 
@@ -277,17 +298,17 @@ export default function Analytics() {
             </ResponsiveContainer>
 
             <div className="mt-4 grid grid-cols-3 gap-4">
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-sm text-gray-600">Current Stock</p>
-                <p className="text-2xl font-bold text-gray-900">{selectedProduct.stock}</p>
+              <div className="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Current Stock</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">{selectedProduct.stock}</p>
               </div>
-              <div className="bg-green-50 p-4 rounded-lg">
-                <p className="text-sm text-gray-600">Price</p>
-                <p className="text-2xl font-bold text-gray-900">${selectedProduct.price}</p>
+              <div className="bg-green-50 dark:bg-green-900 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Price</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">${selectedProduct.price}</p>
               </div>
-              <div className="bg-yellow-50 p-4 rounded-lg">
-                <p className="text-sm text-gray-600">Reorder Level</p>
-                <p className="text-2xl font-bold text-gray-900">{selectedProduct.reorder_level}</p>
+              <div className="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Reorder Level</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">{selectedProduct.reorder_level}</p>
               </div>
             </div>
           </div>

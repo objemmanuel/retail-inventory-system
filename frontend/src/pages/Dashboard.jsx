@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Package, TrendingUp, AlertTriangle, ShoppingCart, Plus, X } from 'lucide-react';
 import api from '../services/api';
-import { useTheme } from '../contexts/ThemeContext';
 
 export default function Dashboard() {
   const [products, setProducts] = useState({ products: [], total: 0 });
@@ -67,6 +66,24 @@ export default function Dashboard() {
   const urgentPredictions = predictions
     .filter(p => p.predicted_days_until_stockout !== null && p.predicted_days_until_stockout < 14)
     .slice(0, 5);
+
+  // Also include products that are currently low stock but may not have predictions yet
+  const lowStockUrgent = lowStock.filter(p => p.stock <= p.reorder_level).slice(0, 5);
+  
+  // Combine and deduplicate
+  const allUrgent = [...urgentPredictions];
+  lowStockUrgent.forEach(lowItem => {
+    if (!allUrgent.some(u => u.product_id === lowItem.id)) {
+      allUrgent.push({
+        product_id: lowItem.id,
+        product_name: lowItem.name,
+        current_stock: lowItem.stock,
+        predicted_days_until_stockout: 0,
+        confidence: 'immediate',
+        reorder_recommended: true
+      });
+    }
+  });
 
   if (loading) {
     return (
@@ -171,12 +188,12 @@ export default function Dashboard() {
                 urgentPredictions.map(pred => (
                   <div
                     key={pred.product_id}
-                    className="bg-gradient-to-r from-red-50 to-orange-50 border-l-4 border-red-500 p-4 rounded-lg hover:shadow-md transition-shadow"
+                    className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900 dark:to-orange-900 border-l-4 border-red-500 p-4 rounded-lg hover:shadow-md transition-shadow"
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <p className="font-semibold text-gray-900">{pred.product_name}</p>
-                        <p className="text-sm text-gray-600 mt-1">Stock: {pred.current_stock}</p>
+                        <p className="font-semibold text-gray-900 dark:text-white">{pred.product_name}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">Stock: {pred.current_stock}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-2xl font-bold text-red-600">
@@ -263,21 +280,21 @@ export default function Dashboard() {
       {/* Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-8 shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-900">Add New Product</h3>
-              <button onClick={() => setShowAddModal(false)} className="text-gray-400 hover:text-gray-600">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Add New Product</h3>
+              <button onClick={() => setShowAddModal(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                 <X size={24} />
               </button>
             </div>
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Product Name</label>
                 <input 
                   value={formData.name}
                   onChange={e => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" 
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" 
                   placeholder="e.g., iPhone 15 Pro"
                 />
               </div>
