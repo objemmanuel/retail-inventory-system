@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Plus, DollarSign, TrendingUp, Calendar } from 'lucide-react';
 import api from '../services/api';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function Sales() {
   const [sales, setSales] = useState([]);

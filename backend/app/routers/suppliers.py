@@ -12,78 +12,6 @@ router = APIRouter(
     tags=["suppliers"]
 )
 
-# Supplier CRUD
-@router.post("/", response_model=schemas.Supplier, status_code=201)
-def create_supplier(
-    supplier: schemas.SupplierCreate,
-    db: Session = Depends(get_db)
-):
-    """Create a new supplier"""
-    db_supplier = models.Supplier(**supplier.model_dump())
-    db.add(db_supplier)
-    db.commit()
-    db.refresh(db_supplier)
-    return db_supplier
-
-@router.get("/", response_model=List[schemas.Supplier])
-def get_suppliers(
-    skip: int = 0,
-    limit: int = 100,
-    active_only: bool = True,
-    db: Session = Depends(get_db)
-):
-    """Get all suppliers"""
-    query = db.query(models.Supplier)
-    if active_only:
-        query = query.filter(models.Supplier.is_active == True)
-    return query.offset(skip).limit(limit).all()
-
-@router.get("/{supplier_id}", response_model=schemas.Supplier)
-def get_supplier(supplier_id: int, db: Session = Depends(get_db)):
-    """Get supplier by ID"""
-    supplier = db.query(models.Supplier).filter(
-        models.Supplier.id == supplier_id
-    ).first()
-    if not supplier:
-        raise HTTPException(status_code=404, detail="Supplier not found")
-    return supplier
-
-@router.put("/{supplier_id}", response_model=schemas.Supplier)
-def update_supplier(
-    supplier_id: int,
-    supplier: schemas.SupplierUpdate,
-    db: Session = Depends(get_db)
-):
-    """Update supplier"""
-    db_supplier = db.query(models.Supplier).filter(
-        models.Supplier.id == supplier_id
-    ).first()
-    
-    if not db_supplier:
-        raise HTTPException(status_code=404, detail="Supplier not found")
-    
-    update_data = supplier.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(db_supplier, key, value)
-    
-    db.commit()
-    db.refresh(db_supplier)
-    return db_supplier
-
-@router.delete("/{supplier_id}")
-def delete_supplier(supplier_id: int, db: Session = Depends(get_db)):
-    """Delete supplier"""
-    supplier = db.query(models.Supplier).filter(
-        models.Supplier.id == supplier_id
-    ).first()
-    
-    if not supplier:
-        raise HTTPException(status_code=404, detail="Supplier not found")
-    
-    db.delete(supplier)
-    db.commit()
-    return {"message": "Supplier deleted successfully"}
-
 # Purchase Orders
 @router.post("/purchase-orders", response_model=schemas.PurchaseOrder, status_code=201)
 def create_purchase_order(
@@ -237,3 +165,75 @@ def get_supplier_performance(
         "late_deliveries": late,
         "performance_score": round((on_time_rate / 100) * supplier.rating, 2)
     }
+# Supplier CRUD
+@router.post("/", response_model=schemas.Supplier, status_code=201)
+def create_supplier(
+    supplier: schemas.SupplierCreate,
+    db: Session = Depends(get_db)
+):
+    """Create a new supplier"""
+    db_supplier = models.Supplier(**supplier.model_dump())
+    db.add(db_supplier)
+    db.commit()
+    db.refresh(db_supplier)
+    return db_supplier
+
+@router.get("/", response_model=List[schemas.Supplier])
+def get_suppliers(
+    skip: int = 0,
+    limit: int = 100,
+    active_only: bool = True,
+    db: Session = Depends(get_db)
+):
+    """Get all suppliers"""
+    query = db.query(models.Supplier)
+    if active_only:
+        query = query.filter(models.Supplier.is_active == True)
+    return query.offset(skip).limit(limit).all()
+
+@router.get("/{supplier_id}", response_model=schemas.Supplier)
+def get_supplier(supplier_id: int, db: Session = Depends(get_db)):
+    """Get supplier by ID"""
+    supplier = db.query(models.Supplier).filter(
+        models.Supplier.id == supplier_id
+    ).first()
+    if not supplier:
+        raise HTTPException(status_code=404, detail="Supplier not found")
+    return supplier
+
+@router.put("/{supplier_id}", response_model=schemas.Supplier)
+def update_supplier(
+    supplier_id: int,
+    supplier: schemas.SupplierUpdate,
+    db: Session = Depends(get_db)
+):
+    """Update supplier"""
+    db_supplier = db.query(models.Supplier).filter(
+        models.Supplier.id == supplier_id
+    ).first()
+    
+    if not db_supplier:
+        raise HTTPException(status_code=404, detail="Supplier not found")
+    
+    update_data = supplier.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_supplier, key, value)
+    
+    db.commit()
+    db.refresh(db_supplier)
+    return db_supplier
+
+@router.delete("/{supplier_id}")
+def delete_supplier(supplier_id: int, db: Session = Depends(get_db)):
+    """Delete supplier"""
+    supplier = db.query(models.Supplier).filter(
+        models.Supplier.id == supplier_id
+    ).first()
+    
+    if not supplier:
+        raise HTTPException(status_code=404, detail="Supplier not found")
+    
+    db.delete(supplier)
+    db.commit()
+    return {"message": "Supplier deleted successfully"}
+

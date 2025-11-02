@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 from typing import Optional, List
+from enum import Enum
 
 # Product Schemas
 class ProductBase(BaseModel):
@@ -69,3 +70,70 @@ class StockPrediction(BaseModel):
     predicted_days_until_stockout: Optional[float]
     reorder_recommended: bool
     predicted_stockout_date: Optional[datetime]
+
+class PurchaseOrderStatus(str, Enum):
+    PENDING = "pending"
+    APPROVED = "approved"
+    ORDERED = "ordered"
+    DELIVERED = "delivered"
+    CANCELLED = "cancelled"
+
+# Supplier Schemas
+class SupplierBase(BaseModel):
+    name: str = Field(..., min_length=2, max_length=200)
+    contact_person: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+
+class SupplierCreate(SupplierBase):
+    pass
+
+class SupplierUpdate(BaseModel):
+    name: Optional[str] = None
+    contact_person: Optional[str] = None
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    rating: Optional[float] = Field(None, ge=0, le=5)
+    is_active: Optional[bool] = None
+
+class Supplier(SupplierBase):
+    id: int
+    rating: float
+    total_orders: int
+    created_at: datetime
+    is_active: bool
+    
+    class Config:
+        from_attributes = True
+
+# Purchase Order Schemas
+class PurchaseOrderCreate(BaseModel):
+    supplier_id: int
+    product_id: int
+    quantity: int = Field(..., gt=0)
+    unit_cost: float = Field(..., gt=0)
+    expected_delivery: Optional[datetime] = None
+    notes: Optional[str] = None
+
+class PurchaseOrderUpdate(BaseModel):
+    status: Optional[PurchaseOrderStatus] = None
+    actual_delivery: Optional[datetime] = None
+    notes: Optional[str] = None
+
+class PurchaseOrder(BaseModel):
+    id: int
+    supplier_id: int
+    product_id: int
+    quantity: int
+    unit_cost: float
+    total_cost: float
+    status: PurchaseOrderStatus
+    order_date: datetime
+    expected_delivery: Optional[datetime]
+    actual_delivery: Optional[datetime]
+    notes: Optional[str]
+    
+    class Config:
+        from_attributes = True
