@@ -9,7 +9,7 @@ import random
 from datetime import datetime, timedelta
 import time
 
-API_URL = "http://localhost:8000"
+API_URL = "https://retail-inventory-system-b8s9.onrender.com"
 
 # Comprehensive product catalog with realistic categories
 PRODUCTS = [
