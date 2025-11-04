@@ -22,7 +22,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "http://localhost:3000",
-        "https://*.vercel.app",
+        "    retail-inventory-system-sage.vercel.app",
         "https://retail-inventory-system-b8s9.onrender.com",  # Add Render domains
 
     ],

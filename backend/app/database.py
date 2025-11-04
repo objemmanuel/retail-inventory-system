@@ -9,7 +9,7 @@ load_dotenv()
 # Database URL from environment or default to local
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://user:password@localhost:5432/smart_retail"
+    "postgresql://smart_retail_user:AAxz0AXnqw7dhhpjqndZfbC0or1rEZDZ@dpg-d44rsouuk2gs73fm353g-a/smart_retail_6lxm"
 )
 
 # Fix for Railway/Render postgres URLs (they use postgres:// instead of postgresql://)
