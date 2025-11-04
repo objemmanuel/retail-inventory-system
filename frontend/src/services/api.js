@@ -1,5 +1,5 @@
 // Check if API URL is set, fallback to localhost
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || 'https://retail-inventory-system-b8s9.onrender.com';
 
 console.log('API URL:', API_URL); // Debug log
 

@@ -7,8 +7,8 @@
 ## 🌟 Live Demo
 
 - **Frontend**: [ai-business-analytics-dashboard.vercel.app](ai-business-analytics-dashboard.vercel.app)
-- **Backend API**: [https://ai-business-analytics-dashboard-1.onrender.com](https://ai-business-analytics-dashboard-1.onrender.com)
-- **API Documentation**: [https://ai-business-analytics-dashboard-1.onrender.com/docs](https://ai-business-analytics-dashboard-1.onrender.com/docs)
+- **Backend API**: [https://retail-inventory-system-b8s9.onrender.com](https://retail-inventory-system-b8s9.onrender.com)
+- **API Documentation**: [https://retail-inventory-system-b8s9.onrender.com/docs](https://retail-inventory-system-b8s9.onrender.com/docs)
 
 
 ### Dashboard 
