@@ -142,7 +142,7 @@
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/smart-retail.git
+git clone https://github.com/objemmanuel/retail-inventory-system.git
 cd smart-retail
 ```
 
@@ -268,7 +268,7 @@ smart-retail/
 ### Base URL
 ```
 Local: http://localhost:8000
-Production: https://your-backend.up.railway.app
+Production: https://retail-inventory-system-b8s9.onrender.com
 ```
 
 ### Interactive API Docs
@@ -410,7 +410,7 @@ PORT=8000
 
 **Frontend (Vercel)**:
 ```env
-VITE_API_URL=https://your-backend.up.railway.app
+VITE_API_URL=https://retail-inventory-system-b8s9.onrender.com
 ```
 
 ---
